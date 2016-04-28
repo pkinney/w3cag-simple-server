@@ -6,7 +6,7 @@ WebSocket server responding to basic `subscribe`, `unsubscribe`, `get`,
 and `set` actions from a client.  Behind the server, it uses the Vinli
 Stream Service as a data source.
 
-The real meat of the implementation is in: [server.js](https://github.com/pkinney/w3cag-simple-server/blob/master/server.js)
+The real meat of the implementation is in: **[server.js](https://github.com/pkinney/w3cag-simple-server/blob/master/server.js)**
 
 Requirements:
 
