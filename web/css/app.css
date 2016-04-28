@@ -1,0 +1,7 @@
+span.value {
+  font-size: 3em;
+}
+
+span.value.highlight {
+  color: red;
+}

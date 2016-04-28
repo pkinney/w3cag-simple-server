@@ -38,9 +38,10 @@ server.on('connection', (ws) => {
         }
         break;
       case 'get':
+        const value = store.get(message.path);
         clients[clientId].send(JSON.stringify({
           path: message.path,
-          value: store.get(message.path)
+          value: typeof value === 'undefined' ? null : value
         }));
         break;
       case 'set':
