@@ -23,6 +23,18 @@ npm install
 docker-compose up
 ```
 
+You will need to have a .vinlirc file or environmental variables specifying Vinli 
+credentials.  You can create a `.vinlirc` file using the steps below or you can set
+the following environment variables:
+
+```bash
+docker-compose run \
+  -e VINLI_APP_ID=f6ba0eaf-30ab-40aa-8f86-8fc377e9ab7d \
+  -e VINLI_APP_SECRET=VR37byf246gzSd3 \
+  -e DEVICE_ID=64c7523f-3f5e-42bd-886b-c7164ffdebd1 \
+  server
+```
+
 ### Set up for Vinli feed:
 
 #### Set up account:
