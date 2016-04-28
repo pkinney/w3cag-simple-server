@@ -1,5 +1,5 @@
-Quick and Dirty Vehicle Service Provider
-========================================
+Vehicle Info Access Demonstrator
+================================
 
 Contains a simple implementation of a vehicle server that provides
 WebSocket server responding to basic `subscribe`, `unsubscribe`, `get`,
