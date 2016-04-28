@@ -15,15 +15,27 @@ server.on('connection', (ws) => {
   const clientId = uuid();
   clients[clientId] = ws;
 
+  console.log(`Connection established with client ${clientId}`);
+
   ws.on('message', (body) => {
     const message = JSON.parse(body);
 
     switch (message.action) {
       case 'subscribe':
-        store.subscribe(clientId, message.path);
+        store.subscribe(clientId, message.path, (path, value) => {
+          console.log(`PUB: ${path}=${JSON.stringify(value)}`);
+          clients[clientId].send(JSON.stringify({
+            path: path,
+            value: value
+          }));
+        });
         break;
       case 'unsubscribe':
-        store.unsubscribe(clientId, message.subscriptionId);
+        if (message.subscriptionId) {
+          store.unsubscribe(clientId, message.subscriptionId);
+        } else {
+          store.unsubscribeByPath(clientId, message.path);
+        }
         break;
       case 'get':
         clients[clientId].send(JSON.stringify({
@@ -37,5 +49,11 @@ server.on('connection', (ws) => {
       default:
         console.log(`unkonwn message action: ${body}`);
     }
+  });
+
+  ws.on('close', () => {
+    console.log(`Client ${clientId} disconnected.`);
+    store.unsubscribe(clientId);
+    delete clients[clientId];
   });
 });

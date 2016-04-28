@@ -8,33 +8,33 @@ const subs = [];
 
 const notifySubs = (path, value) => {
   const toNotify = _.filter(subs, (sub) => {
-    return sub.key === path;
+    return sub.path === path;
   });
 
   _.each(toNotify, (sub) => {
-    sub.cb({ path: path, value: value });
+    sub.cb(path, value);
   });
 };
 
 module.exports = {
-  set: (key, value) => {
-    console.log(`STORE: set ${key}=${JSON.stringify(value)}`);
+  set: (path, value) => {
+    console.log(`STORE: set ${path}=${JSON.stringify(value)}`);
 
-    db[key] = value;
+    db[path] = value;
 
-    notifySubs(key, value);
+    notifySubs(path, value);
   },
 
-  get: (key) => {
-    return db[key];
+  get: (path) => {
+    return db[path];
   },
 
-  subscribe: (clientId, key, cb) => {
+  subscribe: (clientId, path, cb) => {
     const subId = uuid();
     subs.push({
       id: subId,
       clientId: clientId,
-      key: key,
+      path: path,
       cb: cb
     });
 
@@ -42,6 +42,14 @@ module.exports = {
   },
 
   unsubscribe: (clientId, subId) => {
-    _.remove(subs, (sub) => sub.id === subId && sub.clientId === clientId);
+    if (subId) {
+      _.remove(subs, (sub) => sub.id === subId && sub.clientId === clientId);
+    } else {
+      _.remove(subs, (sub) => sub.clientId === clientId);
+    }
+  },
+
+  unsubscribeByPath: (clientId, path) => {
+    _.remove(subs, (sub) => sub.path === path && sub.clientId === clientId);
   }
 };
